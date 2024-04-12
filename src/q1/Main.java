@@ -13,6 +13,34 @@ public class Main {
         System.out.println(list);
         LinkedList<String> reversed = reverseList(list);
         System.out.println(reversed);
+
+        // --------
+        LinkedList<Person> people = new LinkedList<Person>();
+        people.add(new Person("Dolev Goaz", "123456789", 2001));
+        people.add(new Person("Barack Obama", "382137232", 1961));
+        people.add(new Person("Benjamin the Third", "312032100", 802));
+        people.add(new Person("Bob the Builder", "812738126", 1997));
+        System.out.println(people);
+        Person oldest = max(people);
+        System.out.println("The oldest person is: " + oldest);
+    }
+
+    private static <T extends Comparable<T>> T max(LinkedList<T> list) {
+        if (list.getHead() == null) {
+            return null;
+        }
+
+        T currentMax = list.getHead().getValue();
+        LinkedListItem<T> current = list.getHead().getNext();
+        while (current != null) {
+            T newItem = current.getValue();
+            if (newItem.compareTo(currentMax) > 0) {
+                currentMax = newItem;
+            }
+
+            current = current.getNext();
+        }
+        return currentMax;
     }
 
     private static <T> LinkedList<T> reverseList(LinkedList<T> source) {
