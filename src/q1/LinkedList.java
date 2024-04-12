@@ -50,7 +50,8 @@ public class LinkedList<T> {
         LinkedListItem<T> current = head;
 
         while (current != tail) {
-            output += tail.getValue().toString() + " -> ";
+            output += current.getValue().toString() + " -> ";
+            current = current.getNext();
         }
         output += tail.getValue();
         return output;
