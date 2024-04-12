@@ -6,23 +6,26 @@ public class Main {
     private static final int INPUT_COUNT = 6;
 
     public static void main(String[] args) {
-        LinkedList<String> list = new LinkedList<String>();
-        for (int i = 0; i < INPUT_COUNT; i++) {
-            list.add(receiveString("Insert a string: "));
-        }
+        LinkedList<String> list = receiveListFromUser();
         System.out.println(list);
         LinkedList<String> reversed = reverseList(list);
         System.out.println(reversed);
 
         // --------
+
+        LinkedList<Person> people = createPeopleList();
+        System.out.println(people);
+        Person oldest = max(people);
+        System.out.println("THE OLDEST PERSON " + oldest);
+    }
+
+    private static LinkedList<Person> createPeopleList() {
         LinkedList<Person> people = new LinkedList<Person>();
         people.add(new Person("Dolev Goaz", "123456789", 2001));
         people.add(new Person("Barack Obama", "382137232", 1961));
         people.add(new Person("Benjamin the Third", "312032100", 802));
         people.add(new Person("Bob the Builder", "812738126", 1997));
-        System.out.println(people);
-        Person oldest = max(people);
-        System.out.println("The oldest person is: " + oldest);
+        return people;
     }
 
     private static <T extends Comparable<T>> T max(LinkedList<T> list) {
@@ -63,6 +66,14 @@ public class Main {
         }
 
         return output;
+    }
+
+    private static LinkedList<String> receiveListFromUser() {
+        LinkedList<String> list = new LinkedList<String>();
+        for (int i = 0; i < INPUT_COUNT; i++) {
+            list.add(receiveString("Insert a string: "));
+        }
+        return list;
     }
 
     private static String receiveString(String message) {
