@@ -25,12 +25,21 @@ public class DictionaryController {
     private ListView<Phrase> phraseList;
 
     private Dictionary dictionary;
+    private Phrase selectedPhrase;
 
     public void initialize() {
         dictionary = new Dictionary();
         dictionary.addPhrase("Dolev", "A modern day legend");
-        displayListItems();
+        initializeDictionaryList();
         overlaySidebar.setVisible(false);
+    }
+
+    private void initializeDictionaryList() {
+        selectedPhrase = null;
+        phraseList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            selectedPhrase = newValue;
+        });
+        displayListItems();
     }
 
     private void displayListItems() {
@@ -55,7 +64,10 @@ public class DictionaryController {
 
     @FXML
     void onRemoveDefinition(ActionEvent event) {
-
+        if (selectedPhrase == null) return;
+        dictionary.deletePhrase(selectedPhrase.getPhrase());
+        displayListItems();
+        selectedPhrase = null;
     }
 
     @FXML
