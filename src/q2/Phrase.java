@@ -20,4 +20,9 @@ public class Phrase {
     public String getPhrase() {
         return phrase;
     }
+
+    @Override
+    public String toString() {
+        return String.format("\"%s\"- %s", this.getPhrase(), this.getDefinition());
+    }
 }

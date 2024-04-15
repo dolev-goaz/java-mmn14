@@ -20,7 +20,7 @@
          <center>
             <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                <children>
-                  <ListView prefHeight="376.0" prefWidth="100.0" />
+                  <ListView fx:id="phraseList" prefHeight="376.0" prefWidth="100.0" />
                </children>
             </VBox>
          </center>

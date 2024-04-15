@@ -2,6 +2,7 @@ package q2;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 
@@ -12,6 +13,23 @@ public class DictionaryController {
 
     @FXML
     private TextField searchField;
+
+
+    @FXML
+    private ListView<Phrase> phraseList;
+
+    private Dictionary dictionary;
+
+    public void initialize() {
+        dictionary = new Dictionary();
+        dictionary.addPhrase("Dolev", "A modern day legend");
+        displayListItems();
+    }
+
+    private void displayListItems() {
+        phraseList.getItems().clear();
+        phraseList.getItems().addAll(dictionary.getPhrases());
+    }
 
     @FXML
     void onAddDefinition(ActionEvent event) {
