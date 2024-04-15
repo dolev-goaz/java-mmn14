@@ -59,7 +59,14 @@ public class DictionaryController {
 
     @FXML
     void onEditDefinition(ActionEvent event) {
-
+        /* TODO: split the save logic to create or update. this should be inside update,
+         in the same method that handles the "confirm"
+        */
+        if (selectedPhrase == null) return;
+        newExpressionField.setText(selectedPhrase.getPhrase());
+        newDefinitionField.setText(selectedPhrase.getDefinition());
+        newExpressionField.setDisable(true);
+        overlaySidebar.setVisible(true);
     }
 
     @FXML
@@ -77,15 +84,26 @@ public class DictionaryController {
 
     @FXML
     void onSubmitNewDefinition(ActionEvent event) {
-        // TODO: add new definition
         String phrase = newExpressionField.getText();
         String definition = newDefinitionField.getText();
+
+        // check it's a new definition with valid data
         if (phrase.isEmpty() || definition.isEmpty()) return;
         if (dictionary.phraseExists(phrase)) return;
 
+        // add the definition and refresh the list
         dictionary.addPhrase(phrase, definition);
         displayListItems();
+
+        // clear previous fields
+        newExpressionField.clear();
+        newDefinitionField.clear();
+
+        // close the sidebar
         overlaySidebar.setVisible(false);
+
+        // undo disable(in case of update logic)
+        newExpressionField.setDisable(false);
     }
 
     @FXML
