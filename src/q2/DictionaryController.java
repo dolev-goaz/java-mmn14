@@ -9,6 +9,12 @@ import javafx.scene.layout.BorderPane;
 public class DictionaryController {
 
     @FXML
+    private TextField newDefinitionField;
+
+    @FXML
+    private TextField newExpressionField;
+
+    @FXML
     private BorderPane overlaySidebar;
 
     @FXML
@@ -24,6 +30,7 @@ public class DictionaryController {
         dictionary = new Dictionary();
         dictionary.addPhrase("Dolev", "A modern day legend");
         displayListItems();
+        overlaySidebar.setVisible(false);
     }
 
     private void displayListItems() {
@@ -59,6 +66,13 @@ public class DictionaryController {
     @FXML
     void onSubmitNewDefinition(ActionEvent event) {
         // TODO: add new definition
+        String phrase = newExpressionField.getText();
+        String definition = newDefinitionField.getText();
+        if (phrase.isEmpty() || definition.isEmpty()) return;
+        if (dictionary.phraseExists(phrase)) return;
+
+        dictionary.addPhrase(phrase, definition);
+        displayListItems();
         overlaySidebar.setVisible(false);
     }
 

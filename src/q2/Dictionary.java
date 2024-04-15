@@ -13,6 +13,10 @@ public class Dictionary {
         this.innerDict = new TreeMap<String, String>();
     }
 
+    public boolean phraseExists(String phrase) {
+        return this.innerDict.containsKey(phrase);
+    }
+
     // adds a phrase
     public void addPhrase(String phrase, String definition) {
         this.innerDict.put(phrase, definition);
@@ -20,6 +24,10 @@ public class Dictionary {
 
     // updates a phrase
     public void updatePhrase(String phrase, String definition) {
+        if (!phraseExists(phrase)) {
+            // TODO: throw exception
+            return;
+        }
         this.innerDict.put(phrase, definition);
     }
 
@@ -30,7 +38,7 @@ public class Dictionary {
 
     // searches for a phrase&definition pair by phrase
     public Phrase searchPhrase(String phrase) {
-        if (!this.innerDict.containsKey(phrase)) {
+        if (!phraseExists(phrase)) {
             return null;
         }
         return new Phrase(phrase, this.innerDict.get(phrase));

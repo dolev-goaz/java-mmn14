@@ -74,7 +74,7 @@
             </VBox>
          </left>
       </BorderPane>
-      <BorderPane fx:id="overlaySidebar" prefHeight="200.0" prefWidth="200.0" visible="false">
+      <BorderPane fx:id="overlaySidebar" prefHeight="200.0" prefWidth="200.0">
          <right>
             <VBox alignment="CENTER" prefHeight="400.0" prefWidth="532.0" style="-fx-background-color: lightgray;" BorderPane.alignment="CENTER">
                <children>
@@ -98,8 +98,8 @@
                      <children>
                         <Label text="Expression" />
                         <Label text="Definition" GridPane.rowIndex="1" />
-                        <TextField GridPane.columnIndex="1" />
-                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="newExpressionField" GridPane.columnIndex="1" />
+                        <TextField fx:id="newDefinitionField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
                   <HBox alignment="CENTER" prefHeight="33.0" prefWidth="492.0" spacing="15.0">
