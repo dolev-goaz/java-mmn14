@@ -39,22 +39,24 @@ public class DictionaryController {
         phraseList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             selectedPhrase = newValue;
         });
-        displayListItems();
+        displayDictionaryItems();
     }
 
-    private void displayListItems() {
+    private void displayDictionaryItems() {
+        // TODO: clear selection
         phraseList.getItems().clear();
         phraseList.getItems().addAll(dictionary.getPhrases());
+    }
+
+    private void displaySingleItem(Phrase phrase) {
+        // TODO: clear selection
+        phraseList.getItems().clear();
+        phraseList.getItems().add(phrase);
     }
 
     @FXML
     void onAddDefinition(ActionEvent event) {
         overlaySidebar.setVisible(true);
-    }
-
-    @FXML
-    void onClearSearch(ActionEvent event) {
-
     }
 
     @FXML
@@ -73,13 +75,22 @@ public class DictionaryController {
     void onRemoveDefinition(ActionEvent event) {
         if (selectedPhrase == null) return;
         dictionary.deletePhrase(selectedPhrase.getPhrase());
-        displayListItems();
+        displayDictionaryItems();
         selectedPhrase = null;
     }
 
     @FXML
     void onSearch(ActionEvent event) {
+        String phrase = searchField.getText();
+        Phrase foundPhrase = dictionary.searchPhrase(phrase);
+        // TODO: check phrase is found(shows null at the moment)
+        displaySingleItem(foundPhrase);
+    }
 
+    @FXML
+    void onClearSearch(ActionEvent event) {
+        searchField.clear();
+        displayDictionaryItems();
     }
 
     @FXML
@@ -93,7 +104,7 @@ public class DictionaryController {
 
         // add the definition and refresh the list
         dictionary.addPhrase(phrase, definition);
-        displayListItems();
+        displayDictionaryItems();
 
         // clear previous fields
         newExpressionField.clear();
