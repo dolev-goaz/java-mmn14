@@ -26,6 +26,7 @@ public class DictionaryController {
 
     private Dictionary dictionary;
     private Phrase selectedPhrase;
+    private boolean isEditMode;
 
     public void initialize() {
         dictionary = new Dictionary();
@@ -56,6 +57,7 @@ public class DictionaryController {
 
     @FXML
     void onAddDefinition(ActionEvent event) {
+        isEditMode = false;
         overlaySidebar.setVisible(true);
     }
 
@@ -65,6 +67,7 @@ public class DictionaryController {
          in the same method that handles the "confirm"
         */
         if (selectedPhrase == null) return;
+        isEditMode = true;
         newExpressionField.setText(selectedPhrase.getPhrase());
         newDefinitionField.setText(selectedPhrase.getDefinition());
         newExpressionField.setDisable(true);
@@ -100,10 +103,12 @@ public class DictionaryController {
 
         // check it's a new definition with valid data
         if (phrase.isEmpty() || definition.isEmpty()) return;
-        if (dictionary.phraseExists(phrase)) return;
 
-        // add the definition and refresh the list
-        dictionary.addPhrase(phrase, definition);
+        if (isEditMode) {
+            handleEditPhrase(phrase, definition);
+        } else {
+            handleAddPhrase(phrase, definition);
+        }
         displayDictionaryItems();
 
         // clear previous fields
@@ -112,8 +117,14 @@ public class DictionaryController {
 
         // close the sidebar
         overlaySidebar.setVisible(false);
+    }
 
-        // undo disable(in case of update logic)
+    void handleAddPhrase(String phrase, String definition) {
+        if (dictionary.phraseExists(phrase)) return;
+        dictionary.addPhrase(phrase, definition);
+    }
+    void handleEditPhrase(String phrase, String definition) {
+        dictionary.updatePhrase(phrase, definition);
         newExpressionField.setDisable(false);
     }
 
