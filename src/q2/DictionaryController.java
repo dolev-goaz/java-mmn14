@@ -42,16 +42,22 @@ public class DictionaryController {
         });
         displayDictionaryItems();
     }
+    private void clearDisplayList() {
+        phraseList.getItems().clear();
+        selectedPhrase = null;
+    }
 
     private void displayDictionaryItems() {
-        // TODO: clear selection
-        phraseList.getItems().clear();
+        clearDisplayList();
         phraseList.getItems().addAll(dictionary.getPhrases());
     }
 
     private void displaySingleItem(Phrase phrase) {
-        // TODO: clear selection
-        phraseList.getItems().clear();
+        clearDisplayList();
+        if (phrase == null) {
+            // TODO: maybe show fallback
+            return;
+        }
         phraseList.getItems().add(phrase);
     }
 
@@ -63,9 +69,6 @@ public class DictionaryController {
 
     @FXML
     void onEditDefinition(ActionEvent event) {
-        /* TODO: split the save logic to create or update. this should be inside update,
-         in the same method that handles the "confirm"
-        */
         if (selectedPhrase == null) return;
         isEditMode = true;
         newExpressionField.setText(selectedPhrase.getPhrase());
@@ -86,7 +89,6 @@ public class DictionaryController {
     void onSearch(ActionEvent event) {
         String phrase = searchField.getText();
         Phrase foundPhrase = dictionary.searchPhrase(phrase);
-        // TODO: check phrase is found(shows null at the moment)
         displaySingleItem(foundPhrase);
     }
 
