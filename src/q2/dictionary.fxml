@@ -104,8 +104,8 @@
                   </GridPane>
                   <HBox alignment="CENTER" prefHeight="33.0" prefWidth="492.0" spacing="15.0">
                      <children>
-                        <Button onAction="#onSubmitNewDefinition" prefHeight="25.0" prefWidth="68.0" text="Confirm" />
-                        <Button mnemonicParsing="false" onAction="#onCloseNewDefinition" prefHeight="25.0" prefWidth="68.0" text="Close" />
+                        <Button onAction="#onSubmitNewDefinition" prefHeight="25.0" prefWidth="75.0" text="Confirm" />
+                        <Button mnemonicParsing="false" onAction="#onCloseNewDefinition" prefHeight="25.0" prefWidth="75.0" text="Close" />
                      </children>
                   </HBox>
                </children>
