@@ -18,7 +18,10 @@ public class Dictionary {
     }
 
     // adds a phrase
-    public void addPhrase(String phrase, String definition) {
+    public void addPhrase(String phrase, String definition) throws PhraseAlreadyExistsException {
+        if (phraseExists(phrase)) {
+            throw new PhraseAlreadyExistsException(phrase);
+        }
         this.innerDict.put(phrase, definition);
     }
 
@@ -36,9 +39,9 @@ public class Dictionary {
     }
 
     // searches for a phrase&definition pair by phrase
-    public Phrase searchPhrase(String phrase) {
+    public Phrase searchPhrase(String phrase) throws PhraseNotFoundException {
         if (!phraseExists(phrase)) {
-            return null;
+            throw new PhraseNotFoundException(phrase);
         }
         return new Phrase(phrase, this.innerDict.get(phrase));
     }

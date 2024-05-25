@@ -95,9 +95,11 @@ public class DictionaryController {
             showWarningAlert("Empty phrase", "The provided phrase was empty.");
             return;
         }
-        Phrase foundPhrase = dictionary.searchPhrase(phrase);
-        if (foundPhrase == null) {
-            showWarningAlert("Not found", String.format("The phrase '%s' was not found.", phrase));
+        Phrase foundPhrase;
+        try {
+            foundPhrase = dictionary.searchPhrase(phrase);
+        } catch (PhraseNotFoundException e) {
+            showWarningAlert("Error while searching phrase", e.getMessage());
             return;
         }
         displaySingleItem(foundPhrase);
@@ -115,7 +117,11 @@ public class DictionaryController {
         String definition = newDefinitionField.getText();
 
         // check it's a new definition with valid data
-        if (phrase.isEmpty() || definition.isEmpty()) return;
+        if (phrase.isEmpty() || definition.isEmpty()) {
+            showWarningAlert("Invalid data",
+                    "Please make sure that both the phrase and its definition are filled");
+            return;
+        }
 
         boolean success;
         if (isEditMode) {
@@ -148,12 +154,12 @@ public class DictionaryController {
     }
 
     boolean handleAddPhrase(String phrase, String definition) {
-        if (dictionary.phraseExists(phrase)) {
-            showWarningAlert("Already exists",
-                    String.format("The phrase '%s' already exists in the dictionary.", phrase));
+        try {
+            dictionary.addPhrase(phrase, definition);
+        } catch (PhraseAlreadyExistsException e) {
+            showWarningAlert("Error while adding phrase", e.getMessage());
             return false;
         }
-        dictionary.addPhrase(phrase, definition);
         return true;
     }
     boolean handleEditPhrase(String phrase, String definition) {
