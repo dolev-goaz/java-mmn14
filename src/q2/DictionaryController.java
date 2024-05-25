@@ -2,6 +2,7 @@ package q2;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -54,10 +55,6 @@ public class DictionaryController {
 
     private void displaySingleItem(Phrase phrase) {
         clearDisplayList();
-        if (phrase == null) {
-            // TODO: maybe show fallback
-            return;
-        }
         phraseList.getItems().add(phrase);
     }
 
@@ -69,7 +66,10 @@ public class DictionaryController {
 
     @FXML
     void onEditDefinition(ActionEvent event) {
-        if (selectedPhrase == null) return;
+        if (selectedPhrase == null) {
+            warnPhraseNotSelected();
+            return;
+        };
         isEditMode = true;
         newExpressionField.setText(selectedPhrase.getPhrase());
         newDefinitionField.setText(selectedPhrase.getDefinition());
@@ -79,7 +79,10 @@ public class DictionaryController {
 
     @FXML
     void onRemoveDefinition(ActionEvent event) {
-        if (selectedPhrase == null) return;
+        if (selectedPhrase == null) {
+            warnPhraseNotSelected();
+            return;
+        };
         dictionary.deletePhrase(selectedPhrase.getPhrase());
         displayDictionaryItems();
         selectedPhrase = null;
@@ -88,7 +91,15 @@ public class DictionaryController {
     @FXML
     void onSearch(ActionEvent event) {
         String phrase = searchField.getText();
+        if (phrase.isEmpty()) {
+            showWarningAlert("Empty phrase", "The provided phrase was empty.");
+            return;
+        }
         Phrase foundPhrase = dictionary.searchPhrase(phrase);
+        if (foundPhrase == null) {
+            showWarningAlert("Not found", String.format("The phrase '%s' was not found.", phrase));
+            return;
+        }
         displaySingleItem(foundPhrase);
     }
 
@@ -106,10 +117,14 @@ public class DictionaryController {
         // check it's a new definition with valid data
         if (phrase.isEmpty() || definition.isEmpty()) return;
 
+        boolean success;
         if (isEditMode) {
-            handleEditPhrase(phrase, definition);
+            success = handleEditPhrase(phrase, definition);
         } else {
-            handleAddPhrase(phrase, definition);
+            success = handleAddPhrase(phrase, definition);
+        }
+        if (!success) {
+            return; // operation failed
         }
         displayDictionaryItems();
 
@@ -120,14 +135,32 @@ public class DictionaryController {
         // close the sidebar
         overlaySidebar.setVisible(false);
     }
-
-    void handleAddPhrase(String phrase, String definition) {
-        if (dictionary.phraseExists(phrase)) return;
-        dictionary.addPhrase(phrase, definition);
+    private static void warnPhraseNotSelected() {
+        showWarningAlert("Phrase not selected", "please select a phrase");
     }
-    void handleEditPhrase(String phrase, String definition) {
+
+    private static void showWarningAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    boolean handleAddPhrase(String phrase, String definition) {
+        if (dictionary.phraseExists(phrase)) {
+            showWarningAlert("Already exists",
+                    String.format("The phrase '%s' already exists in the dictionary.", phrase));
+            return false;
+        }
+        dictionary.addPhrase(phrase, definition);
+        return true;
+    }
+    boolean handleEditPhrase(String phrase, String definition) {
+        // TODO: throw exception from within updatePhrase
         dictionary.updatePhrase(phrase, definition);
         newExpressionField.setDisable(false);
+        return true;
     }
 
     @FXML
