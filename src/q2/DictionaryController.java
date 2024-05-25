@@ -83,7 +83,12 @@ public class DictionaryController {
             warnPhraseNotSelected();
             return;
         };
-        dictionary.deletePhrase(selectedPhrase.getPhrase());
+        try {
+            dictionary.deletePhrase(selectedPhrase.getPhrase());
+        } catch (PhraseNotFoundException e) {
+            showWarningAlert("Error while deleting phrase", e.getMessage());
+            return;
+        }
         displayDictionaryItems();
         selectedPhrase = null;
     }
