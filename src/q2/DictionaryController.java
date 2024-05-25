@@ -31,7 +31,7 @@ public class DictionaryController {
 
     public void initialize() {
         dictionary = new Dictionary();
-        dictionary.addPhrase("Dolev", "A modern day legend");
+        dictionary.addPhrase("Hold your horses", "A request to someone to wait patiently");
         initializeDictionaryList();
         overlaySidebar.setVisible(false);
     }
