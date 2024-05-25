@@ -6,12 +6,12 @@ public class Main {
     private static final int INPUT_COUNT = 6;
 
     public static void main(String[] args) {
-        LinkedList<String> list = receiveListFromUser(INPUT_COUNT);
+        LinkedList<String> list = receiveListFromUser(INPUT_COUNT, "Insert a string: ");
         System.out.println(list);
         LinkedList<String> reversed = reverseList(list);
         System.out.println(reversed);
 
-        // --------
+        System.out.println("--------");
 
         LinkedList<Person> people = createPeopleList();
         System.out.println(people);
@@ -79,19 +79,14 @@ public class Main {
 
 
     // Receives k strings from the user and creates a linked list out of them.
-    private static LinkedList<String> receiveListFromUser(int k) {
+    private static LinkedList<String> receiveListFromUser(int k, String inputMessage) {
         LinkedList<String> list = new LinkedList<String>();
+        Scanner s = new Scanner(System.in);
         for (int i = 0; i < k; i++) {
-            list.add(receiveString("Insert a string: "));
+            System.out.println(inputMessage);
+            list.add(s.nextLine());
         }
+        s.close();
         return list;
     }
-
-    // Receives a string from the user with the provided input message
-    private static String receiveString(String message) {
-        System.out.print(message);
-        Scanner s = new Scanner(System.in);
-        return s.nextLine();
-    }
-
 }
