@@ -56,7 +56,7 @@ public class Main {
         LinkedListItem<T> next;
 
         // logic- always 'store' the current 3 items. point the center one(the current) to the one before it(previous),
-        // then move them forward one step. we do that until we traversed the list
+        // making it the next one instead. then move them forward one step. we do that until we traversed the list
         while (current != null) {
             next = current.getNext();
             current.setNext(previous);
