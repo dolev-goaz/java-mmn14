@@ -124,7 +124,7 @@ public class DictionaryController {
             success = handleAddPhrase(phrase, definition);
         }
         if (!success) {
-            return; // operation failed
+            return; // operation failed, stop cleanup
         }
         displayDictionaryItems();
 
@@ -157,8 +157,12 @@ public class DictionaryController {
         return true;
     }
     boolean handleEditPhrase(String phrase, String definition) {
-        // TODO: throw exception from within updatePhrase
-        dictionary.updatePhrase(phrase, definition);
+        try {
+            dictionary.updatePhrase(phrase, definition);
+        } catch (PhraseNotFoundException e) {
+            showWarningAlert("Error while editing phrase", e.getMessage());
+            return false;
+        }
         newExpressionField.setDisable(false);
         return true;
     }

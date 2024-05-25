@@ -23,10 +23,9 @@ public class Dictionary {
     }
 
     // updates a phrase
-    public void updatePhrase(String phrase, String definition) {
+    public void updatePhrase(String phrase, String definition) throws PhraseNotFoundException {
         if (!phraseExists(phrase)) {
-            // TODO: throw exception
-            return;
+            throw new PhraseNotFoundException(phrase);
         }
         this.innerDict.put(phrase, definition);
     }
